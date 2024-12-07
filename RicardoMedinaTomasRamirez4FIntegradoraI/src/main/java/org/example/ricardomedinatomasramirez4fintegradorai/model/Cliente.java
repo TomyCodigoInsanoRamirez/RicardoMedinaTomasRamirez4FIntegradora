@@ -1,9 +1,6 @@
-package org.example.ricardomedinatomasramirez4fintegradorai.model;
+package org.example.supermercado.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -11,81 +8,36 @@ import java.util.List;
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
-    private String primerNombre;
-
-    private String segundoNombre;
-    private String apellidoPaterno;
-    private String apellidoMaterno;
-
-    @Column(nullable = false)
-    private String estadoNacimiento;
-
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date fechaNacimiento;
+    private String nombre;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<CarritoProducto> carritoProductos;
+    private List<org.example.supermercado.model.CarritoProducto> carritoProductos;
 
     // Getters y Setters
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getPrimerNombre() {
-        return primerNombre;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setPrimerNombre(String primerNombre) {
-        this.primerNombre = primerNombre;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getSegundoNombre() {
-        return segundoNombre;
+    public List<org.example.supermercado.model.CarritoProducto> getCarritoProductos() {
+        return carritoProductos;
     }
 
-    public void setSegundoNombre(String segundoNombre) {
-        this.segundoNombre = segundoNombre;
+    public void setCarritoProductos(List<org.example.supermercado.model.CarritoProducto> carritoProductos) {
+        this.carritoProductos = carritoProductos;
     }
-
-    public String getApellidoPaterno() {
-        return apellidoPaterno;
-    }
-
-    public void setApellidoPaterno(String apellidoPaterno) {
-        this.apellidoPaterno = apellidoPaterno;
-    }
-
-    public String getApellidoMaterno() {
-        return apellidoMaterno;
-    }
-
-    public void setApellidoMaterno(String apellidoMaterno) {
-        this.apellidoMaterno = apellidoMaterno;
-    }
-
-    public String getEstadoNacimiento() {
-        return estadoNacimiento;
-    }
-
-    public void setEstadoNacimiento(String estadoNacimiento) {
-        this.estadoNacimiento = estadoNacimiento;
-    }
-
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-
 }

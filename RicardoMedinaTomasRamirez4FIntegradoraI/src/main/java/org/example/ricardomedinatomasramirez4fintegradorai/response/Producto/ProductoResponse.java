@@ -1,6 +1,8 @@
 package org.example.ricardomedinatomasramirez4fintegradorai.response.Producto;
 
 
+import org.example.ricardomedinatomasramirez4fintegradorai.model.Producto;
+
 import java.util.List;
 
 public class ProductoResponse {

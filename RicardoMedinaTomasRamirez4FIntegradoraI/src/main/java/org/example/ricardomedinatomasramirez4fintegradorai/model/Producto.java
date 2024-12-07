@@ -1,4 +1,4 @@
-package org.example.ricardomedinatomasramirez4fintegradorai.model;
+package org.example.supermercado.model;
 
 import jakarta.persistence.*;
 
@@ -7,20 +7,20 @@ import jakarta.persistence.*;
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String nombre;
 
     @Column(nullable = false)
-    private double precio;
+    private Double precio;
 
     // Getters y Setters
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -32,11 +32,11 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public double getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 }

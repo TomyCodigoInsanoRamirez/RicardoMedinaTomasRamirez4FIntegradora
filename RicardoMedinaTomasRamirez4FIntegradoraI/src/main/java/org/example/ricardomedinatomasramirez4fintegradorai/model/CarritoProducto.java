@@ -1,20 +1,26 @@
-package org.example.ricardomedinatomasramirez4fintegradorai.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package org.example.supermercado.model;
+
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "carrito_producto")
 public class CarritoProducto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombreProducto;
-    private Integer cantidad;
-    private Double precio;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private org.example.supermercado.model.Cliente cliente;
 
-    // Getters y setters
+    @ManyToOne
+    @JoinColumn(name = "producto_id", nullable = false)
+    private org.example.supermercado.model.Producto producto;
+
+    @Column(nullable = false)
+    private Integer cantidad;
+
+    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -23,12 +29,20 @@ public class CarritoProducto {
         this.id = id;
     }
 
-    public String getNombreProducto() {
-        return nombreProducto;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setNombreProducto(String nombreProducto) {
-        this.nombreProducto = nombreProducto;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(org.example.supermercado.model.Producto producto) {
+        this.producto = producto;
     }
 
     public Integer getCantidad() {
@@ -37,13 +51,5 @@ public class CarritoProducto {
 
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
-    }
-
-    public Double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Double precio) {
-        this.precio = precio;
     }
 }
