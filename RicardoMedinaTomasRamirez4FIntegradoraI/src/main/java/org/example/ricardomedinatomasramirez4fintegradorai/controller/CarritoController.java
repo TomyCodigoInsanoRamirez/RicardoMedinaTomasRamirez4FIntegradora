@@ -4,11 +4,9 @@ import org.example.ricardomedinatomasramirez4fintegradorai.dao.ICarritoRepositor
 import org.example.ricardomedinatomasramirez4fintegradorai.model.CarritoProducto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 //import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("/carrito")
@@ -21,4 +19,12 @@ public class CarritoController {
         CarritoProducto carritoProducto = carritoRepository.save(itemAdd);
         return ResponseEntity.ok(carritoProducto);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CarritoProducto> getItemCliente(@PathVariable Long id) {
+        return carritoRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }
