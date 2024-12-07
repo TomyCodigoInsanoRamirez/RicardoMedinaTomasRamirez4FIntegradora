@@ -87,11 +87,5 @@ public class Cliente {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public List<CarritoProducto> getCarritoProductos() {
-        return carritoProductos;
-    }
 
-    public void setCarritoProductos(List<CarritoProducto> carritoProductos) {
-        this.carritoProductos = carritoProductos;
-    }
 }
