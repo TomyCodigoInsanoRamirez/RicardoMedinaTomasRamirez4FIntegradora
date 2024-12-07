@@ -1,4 +1,4 @@
-package org.example.ricardomedinatomasramirez4fintegradorai.response.Cliente.Producto;
+package org.example.ricardomedinatomasramirez4fintegradorai.response.Producto;
 
 
 import java.util.List;

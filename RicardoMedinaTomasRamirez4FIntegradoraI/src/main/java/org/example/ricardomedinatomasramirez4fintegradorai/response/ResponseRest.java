@@ -1,4 +1,4 @@
-package org.example.ricardomedinatomasramirez4fintegradorai.response.Cliente;
+package org.example.ricardomedinatomasramirez4fintegradorai.response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
