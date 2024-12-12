@@ -7,21 +7,20 @@ import org.example.ricardomedinatomasramirez4fintegradorai.service.ICarritoServi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-//import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @RequestMapping("/carrito")
 public class CarritoController {
+
     @Autowired
     private ICarritoRepository carritoRepository;
+
     private final ICarritoService carritoService;
 
     @Autowired
     public CarritoController(ICarritoService carritoService) {
         this.carritoService = carritoService;
     }
-
 
     @PostMapping("/agregar")
     public ResponseEntity<CarritoProducto> agregarItemCarro(@RequestBody CarritoProducto itemAdd) {
@@ -36,12 +35,13 @@ public class CarritoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-
-
-    @DeleteMapping("/eliminar/{id}")
+    @PostMapping("/eliminar/{id}")
     public ResponseEntity<CarritoProductoResponse> eliminar(@PathVariable Long id) {
-        ResponseEntity<CarritoProductoResponse> response = carritoService.eliminar(id);
-        return response;
+        return carritoService.eliminar(id);
     }
 
+    @PostMapping("/deshacer")
+    public ResponseEntity<CarritoProductoResponse> deshacer() {
+        return carritoService.deshacerEliminacion();
+    }
 }

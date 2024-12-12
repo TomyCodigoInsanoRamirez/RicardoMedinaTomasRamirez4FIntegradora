@@ -1,6 +1,7 @@
 package org.example.ricardomedinatomasramirez4fintegradorai.response.Cliente;
 
 import org.example.ricardomedinatomasramirez4fintegradorai.model.Cliente;
+import org.example.ricardomedinatomasramirez4fintegradorai.response.ResponseRest;
 
 import java.util.List;
 

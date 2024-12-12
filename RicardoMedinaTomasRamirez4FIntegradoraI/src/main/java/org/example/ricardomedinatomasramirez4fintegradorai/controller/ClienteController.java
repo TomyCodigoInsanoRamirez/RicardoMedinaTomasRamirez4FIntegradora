@@ -10,15 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/cliente")
+@RequestMapping("/caja")
 public class ClienteController {
 
     @Autowired
     private IClienteRepository clienteRepository;
 
-    @PostMapping("/agregarCliente")
+    @PostMapping("/agregar")
     public ResponseEntity<Cliente> agregarCliente(@RequestBody Cliente cliente) {
         Cliente nuevoCliente = clienteRepository.save(cliente);
         return ResponseEntity.ok(nuevoCliente);
     }
+
 }
