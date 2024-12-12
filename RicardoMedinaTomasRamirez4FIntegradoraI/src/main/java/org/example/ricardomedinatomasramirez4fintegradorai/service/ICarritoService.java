@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface ICarritoService {
     ResponseEntity<CarritoProductoResponse> buscarTodo();
-    ResponseEntity<CarritoProductoResponse> eliminar();
+    ResponseEntity<CarritoProductoResponse> eliminar(Long id);
 
 }
 

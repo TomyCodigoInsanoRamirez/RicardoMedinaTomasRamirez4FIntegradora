@@ -34,7 +34,7 @@ public class CarritoController {
 
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<CarritoProductoResponse> eliminar(@PathVariable Long id){
-        ResponseEntity<CarritoProductoResponse> response = carritoService.eliminar();
+        ResponseEntity<CarritoProductoResponse> response = carritoService.eliminar(id);
         return response;
     }
 
