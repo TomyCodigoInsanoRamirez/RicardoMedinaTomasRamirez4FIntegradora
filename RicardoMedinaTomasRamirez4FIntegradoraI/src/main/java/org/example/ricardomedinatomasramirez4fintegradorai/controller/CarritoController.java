@@ -41,7 +41,7 @@ public class CarritoController {
     }
 
     @PostMapping("/deshacer")
-    public ResponseEntity<CarritoProductoResponse> deshacer() {
-        return carritoService.deshacerEliminacion();
+    public ResponseEntity<CarritoProductoResponse> deshacer(Long id) {
+        return carritoService.deshacerEliminacion(id);
     }
 }

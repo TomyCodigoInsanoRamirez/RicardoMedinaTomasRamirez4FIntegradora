@@ -18,12 +18,10 @@ import java.util.Stack;
 public class CarritoProductoServiceImpl implements ICarritoService {
 
     private static final Logger log = LoggerFactory.getLogger(CarritoProductoServiceImpl.class);
+    private static Stack<CarritoProducto> pilaEliminados = new Stack<>();
 
     @Autowired
     private ICarritoRepository carritoDao;
-
-    // Pila para almacenar los productos eliminados
-    private Stack<CarritoProducto> pilaEliminados = new Stack<>();
 
     @Override
     public ResponseEntity<CarritoProductoResponse> eliminar(Long id) {
@@ -33,7 +31,7 @@ public class CarritoProductoServiceImpl implements ICarritoService {
             CarritoProducto producto = carritoDao.findById(id).orElse(null);
             if (producto != null) {
                 // Almacenamos el producto eliminado en la pila para deshacer
-                pilaEliminados.push(producto);
+                pilaEliminados.push(producto); // Usamos la pila estática de eliminados
                 carritoDao.deleteById(id); // Eliminamos el producto del carrito
                 response.setMetada("Respuesta OK", "00", "Producto eliminado exitosamente");
             } else {
@@ -49,14 +47,14 @@ public class CarritoProductoServiceImpl implements ICarritoService {
     }
 
     @Override
-    public ResponseEntity<CarritoProductoResponse> deshacerEliminacion() {
+    public ResponseEntity<CarritoProductoResponse> deshacerEliminacion(Long id) {
         log.info("Deshaciendo la última eliminación");
         CarritoProductoResponse response = new CarritoProductoResponse();
-
         try {
+            // Verificamos si hay elementos en la pila
             if (!pilaEliminados.isEmpty()) {
                 // Obtener el último elemento eliminado de la pila
-                CarritoProducto ultimoEliminado = pilaEliminados.pop();
+                CarritoProducto ultimoEliminado = pilaEliminados.pop(); // Usamos la pila de eliminados
                 carritoDao.save(ultimoEliminado); // Reinsertar el producto en el carrito
 
                 response.setMetada("Respuesta OK", "00", "Última eliminación deshecha exitosamente");
@@ -71,5 +69,4 @@ public class CarritoProductoServiceImpl implements ICarritoService {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); // Error del servidor
         }
     }
-
 }
