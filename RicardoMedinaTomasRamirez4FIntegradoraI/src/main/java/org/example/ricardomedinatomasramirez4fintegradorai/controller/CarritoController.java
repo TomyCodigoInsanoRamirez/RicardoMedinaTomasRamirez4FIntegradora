@@ -3,6 +3,7 @@ package org.example.ricardomedinatomasramirez4fintegradorai.controller;
 import org.example.ricardomedinatomasramirez4fintegradorai.dao.ICarritoRepository;
 import org.example.ricardomedinatomasramirez4fintegradorai.model.CarritoProducto;
 import org.example.ricardomedinatomasramirez4fintegradorai.response.CarritoProducto.CarritoProductoResponse;
+import org.example.ricardomedinatomasramirez4fintegradorai.service.ICarritoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/carrito")
+    @RequestMapping("/carrito")
 public class CarritoController {
     @Autowired
     private ICarritoRepository carritoRepository;
+    private ICarritoService carritoService;
 
     @PostMapping("/agregar")
     public ResponseEntity<CarritoProducto> agregarItemCarro(@RequestBody CarritoProducto itemAdd) {
@@ -28,9 +30,11 @@ public class CarritoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+
+
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<CarritoProductoResponse> eliminar(@PathVariable Long id){
-        ResponseEntity<CarritoProductoResponse> response = carritoRepository.eliminar();
+        ResponseEntity<CarritoProductoResponse> response = carritoService.eliminar();
         return response;
     }
 
