@@ -11,11 +11,17 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-    @RequestMapping("/carrito")
+@RequestMapping("/carrito")
 public class CarritoController {
     @Autowired
     private ICarritoRepository carritoRepository;
-    private ICarritoService carritoService;
+    private final ICarritoService carritoService;
+
+    @Autowired
+    public CarritoController(ICarritoService carritoService) {
+        this.carritoService = carritoService;
+    }
+
 
     @PostMapping("/agregar")
     public ResponseEntity<CarritoProducto> agregarItemCarro(@RequestBody CarritoProducto itemAdd) {
@@ -33,7 +39,7 @@ public class CarritoController {
 
 
     @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<CarritoProductoResponse> eliminar(@PathVariable Long id){
+    public ResponseEntity<CarritoProductoResponse> eliminar(@PathVariable Long id) {
         ResponseEntity<CarritoProductoResponse> response = carritoService.eliminar(id);
         return response;
     }
