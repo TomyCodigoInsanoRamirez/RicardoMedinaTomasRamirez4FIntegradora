@@ -49,17 +49,12 @@ public class CarritoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    /*@PostMapping("/eliminar/{id}")
+    @PostMapping("/eliminar/{id}")
     public ResponseEntity<CarritoProductoResponse> eliminar(@PathVariable Long id) {
-        Cliente cliente = carritoService.eliminar(id).getBody().getCarritoProductoss().get(0).getCliente();
-        Producto producto = carritoService.eliminar(id).getBody().getCarritoProductoss().get(0).getProducto();
-        Long idCliente = cliente.getId();
-        String NombreCliente = cliente.getPrimerNombre();
-        String pellidoCliente = cliente.getApellidoPaterno();
-        Long idProducto = producto.getId();
-        String nombreProducto =producto.getNombre();
-        double precoio = producto.getPrecio();
-        int cantidad = carritoService.eliminar(id).getBody().getCarritoProductoss().get(0).getCantidad();
+        Cliente cliente = carritoService.eliminar(id,id).getBody().getCarritoProductoss().get(0).getCliente();
+        Producto producto = carritoService.eliminar(id,id).getBody().getCarritoProductoss().get(0).getProducto();
+
+        int cantidad = carritoService.eliminar(id,id).getBody().getCarritoProductoss().get(0).getCantidad();
         //Long idCarrito = carritoService.eliminar(id).getBody().getCarritoProductoss().get(0).getId();
         CarritoProducto elementoEliminado = new CarritoProducto();
         elementoEliminado.setId(idCarrito);
@@ -67,8 +62,8 @@ public class CarritoController {
         elementoEliminado.setCliente(cliente);
         elementoEliminado.setProducto(producto);
         elementosEliminados.push(elementoEliminado);
-        return carritoService.eliminar(id);
-    }*/
+        return carritoService.eliminar(id,id);
+    }
 
     @PostMapping("/deshacer")
     public ResponseEntity<CarritoProducto> deshacer() {
