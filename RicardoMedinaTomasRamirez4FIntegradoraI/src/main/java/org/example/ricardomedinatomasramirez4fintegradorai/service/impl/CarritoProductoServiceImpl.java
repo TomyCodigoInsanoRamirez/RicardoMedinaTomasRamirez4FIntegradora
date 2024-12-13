@@ -22,7 +22,7 @@ public class CarritoProductoServiceImpl implements ICarritoService {
 
     @Autowired
     private ICarritoRepository carritoDao;
-
+  /*
     @Override
     public ResponseEntity<CarritoProductoResponse> eliminar(Long id) {
         log.info("Buscando en el carrito para eliminar el producto con ID: " + id);
@@ -45,6 +45,8 @@ public class CarritoProductoServiceImpl implements ICarritoService {
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+*/
 
     @Override
     public ResponseEntity<CarritoProductoResponse> deshacerEliminacion(Long id) {
