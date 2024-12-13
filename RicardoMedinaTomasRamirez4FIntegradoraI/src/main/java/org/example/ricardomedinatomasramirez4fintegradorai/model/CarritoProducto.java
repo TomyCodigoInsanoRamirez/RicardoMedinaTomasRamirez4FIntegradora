@@ -9,11 +9,11 @@ public class CarritoProducto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "producto_id", nullable = false)
     private Producto producto;
 
