@@ -1,5 +1,6 @@
 package org.example.ricardomedinatomasramirez4fintegradorai.controller;
 
+import org.example.ricardomedinatomasramirez4fintegradorai.dao.ICarritoProductoRepositoryCustom;
 import org.example.ricardomedinatomasramirez4fintegradorai.dao.ICarritoRepository;
 import org.example.ricardomedinatomasramirez4fintegradorai.model.CarritoProducto;
 import org.example.ricardomedinatomasramirez4fintegradorai.model.Cliente;
@@ -20,7 +21,7 @@ public class CarritoController {
     Stack<CarritoProducto> elementosEliminados = new Stack<>();
     @Autowired
     private ICarritoRepository carritoRepository;
-
+    private ICarritoProductoRepositoryCustom carritoRepositoryCustom;
     private final ICarritoService carritoService;
 
     @Autowired
@@ -50,19 +51,16 @@ public class CarritoController {
     }
 
     @PostMapping("/eliminar/{id}")
-    public ResponseEntity<CarritoProductoResponse> eliminar(@PathVariable Long id) {
-        Cliente cliente = carritoService.eliminar(id,id).getBody().getCarritoProductoss().get(0).getCliente();
-        Producto producto = carritoService.eliminar(id,id).getBody().getCarritoProductoss().get(0).getProducto();
+    public ResponseEntity<CarritoProductoResponse> eliminar(@PathVariable Long idProducto, Long idCliente) {
 
-        int cantidad = carritoService.eliminar(id,id).getBody().getCarritoProductoss().get(0).getCantidad();
-        //Long idCarrito = carritoService.eliminar(id).getBody().getCarritoProductoss().get(0).getId();
         CarritoProducto elementoEliminado = new CarritoProducto();
-        elementoEliminado.setId(idCarrito);
-        elementoEliminado.setCantidad(cantidad);
-        elementoEliminado.setCliente(cliente);
-        elementoEliminado.setProducto(producto);
+        //elementoEliminado.setId(carritoRepository.findByIdProductoAndIdCliente(idProducto,idCliente).get(0).getId());
+        elementoEliminado.setCantidad(carritoRepository.findByIdProductoAndIdCliente(idProducto,idCliente).get(0).getCantidad());
+        elementoEliminado.setCliente(carritoRepository.findByIdProductoAndIdCliente(idProducto,idCliente).get(0).getCliente());
+        elementoEliminado.setProducto(carritoRepository.findByIdProductoAndIdCliente(idProducto,idCliente).get(0).getProducto());
         elementosEliminados.push(elementoEliminado);
-        return carritoService.eliminar(id,id);
+
+        return carritoService.eliminar(carritoRepository.findByIdProductoAndIdCliente(idProducto,idCliente).get(0).getId());
     }
 
     @PostMapping("/deshacer")

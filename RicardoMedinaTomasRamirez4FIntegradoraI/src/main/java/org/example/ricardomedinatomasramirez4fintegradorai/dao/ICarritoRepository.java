@@ -5,6 +5,9 @@ import org.example.ricardomedinatomasramirez4fintegradorai.response.CarritoProdu
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface ICarritoRepository extends CrudRepository<CarritoProducto, Long> {
     //ResponseEntity<CarritoProductoResponse> eliminar();
+    List<CarritoProducto> findByIdProductoAndIdCliente(Long idProducto, Long idCliente);
 }

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.example.ricardomedinatomasramirez4fintegradorai.response.ResponseRest;
 
 import java.util.Stack;
 
@@ -23,8 +22,33 @@ public class CarritoProductoServiceImpl implements ICarritoService {
     @Autowired
     private ICarritoRepository carritoDao;
 
+
+
     @Override
     public ResponseEntity<CarritoProductoResponse> eliminar(Long id) {
+        log.info("Buscando en el carrito para eliminar el producto con ID: " + id);
+        CarritoProductoResponse response = new CarritoProductoResponse();
+        try {
+            CarritoProducto producto = carritoDao.findById(id).orElse(null);
+            if (producto != null) {
+                // Almacenamos el producto eliminado en la pila para deshacer
+                pilaEliminados.push(producto); // Usamos la pila estática de eliminados
+                carritoDao.deleteById(id); // Eliminamos el producto del carrito
+                response.setMetada("Respuesta OK", "00", "Producto eliminado exitosamente");
+            } else {
+                response.setMetada("Error", "-1", "Producto no encontrado");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            response.setMetada("Error", "-1", "Error al eliminar el producto");
+            log.error("Error al eliminar el producto", e);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CarritoProductoResponse> eliminarCarritoProducto(Long id, Long id2) {
         log.info("Buscando en el carrito para eliminar el producto con ID: " + id);
         CarritoProductoResponse response = new CarritoProductoResponse();
         try {
