@@ -27,7 +27,7 @@ public class CajaController {
     private ICarritoRepository carritoRepositoryy;
 
     Queue<CarritoProducto> queue = new Queue<CarritoProducto>(100);
-    Queue<CarritoProducto> queue2 = new Queue<CarritoProducto>(100);
+    //Queue<CarritoProducto> queue2 = new Queue<CarritoProducto>(100);
     //Queue<CarritoProducto> queue2 = new LinkedList<>(queue); // Copia de la cola original
 
 
@@ -85,7 +85,9 @@ public class CajaController {
 
     @GetMapping("/obtenerFila")
     public ResponseEntity<ArrayList<CarritoProducto>> obtenerFila() {
-        queue2 = queue;
+
+        Queue<CarritoProducto> queue2 = queue.copy();
+        //queue2 = queue;
         ArrayList<CarritoProducto> res= new ArrayList<CarritoProducto>();// Obtener la cola completa
         while (!queue2.isEmpty()){
             res.add(queue2.poll());

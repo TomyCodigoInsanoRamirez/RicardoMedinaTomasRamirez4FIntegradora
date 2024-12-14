@@ -47,6 +47,18 @@ public class Queue<T> {
         return items[head];
     }
 
+
+    public Queue<T> copy() {
+        Queue<T> newQueue = new Queue<>(this.arrLength); // Nueva instancia con la misma capacidad
+        int currentIndex = this.head; // Comenzar desde el índice de la cabeza
+        for (int i = 0; i < this.itemsNumber; i++) {
+            newQueue.offer(this.items[currentIndex]); // Copiar elemento
+            currentIndex = (currentIndex + 1) % this.arrLength; // Avanzar de manera circular
+        }
+        return newQueue; // Retornar la copia
+    }
+
+
     public boolean isEmpty(){//verificar que la cola esta vacia
         return (itemsNumber == 0);
     }
