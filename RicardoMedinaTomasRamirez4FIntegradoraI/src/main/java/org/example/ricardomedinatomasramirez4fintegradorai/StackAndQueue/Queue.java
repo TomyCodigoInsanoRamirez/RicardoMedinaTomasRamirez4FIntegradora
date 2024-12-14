@@ -9,7 +9,7 @@ public class Queue<T> {
 
 
 
-    Queue( int arrLength){
+    public Queue(int arrLength){
         this.arrLength = arrLength;
         this.head = 0;
         this.tail = -1;
