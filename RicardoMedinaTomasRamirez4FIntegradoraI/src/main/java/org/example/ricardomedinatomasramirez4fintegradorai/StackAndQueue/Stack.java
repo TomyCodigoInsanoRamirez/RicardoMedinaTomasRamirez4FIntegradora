@@ -16,6 +16,7 @@ public class Stack <T> {
             System.out.println("El stack ya esta lleno, no puedes agregar mas");
             return;
         }
+
         items[++tope]=item;
     }
 
