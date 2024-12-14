@@ -51,6 +51,6 @@ public class Caja {
         return "Caja{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
-                '}';
-    }
+                    '}';
+        }
 }
