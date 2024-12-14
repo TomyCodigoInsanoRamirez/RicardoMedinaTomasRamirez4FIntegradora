@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 //import java.util.Stack;
 
@@ -37,7 +38,7 @@ public class CarritoController {
         return ResponseEntity.ok(carritoProducto);
     }
 
-    @Transactional
+    /*@Transactional
     @GetMapping("/carrito/{id}")
     public ResponseEntity<CarritoProducto> getItemCliente(@PathVariable Long id) {
 
@@ -47,10 +48,26 @@ public class CarritoController {
         //System.out.println("Id producto: "+carritoRepository.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()).getBody().getProducto().getId());
         //System.out.println("Nomrbe producto"+carritoRepository.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()).getBody().getProducto().getNombre());
 
-        return carritoRepository.findById(id)
+        return carritoRepository.findByClienteId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }*/
+
+    @Transactional
+    @GetMapping("/carrito/{id}")
+    public ResponseEntity<List<CarritoProducto>> getItemCliente(@PathVariable Long id) {
+        // Buscar los productos asociados al cliente
+        List<CarritoProducto> carritos = carritoRepository.findByClienteId(id);
+
+        if (carritos.isEmpty()) {
+            // Si la lista está vacía, devolvemos un 404 Not Found
+            return ResponseEntity.notFound().build();
+        } else {
+            // Si hay resultados, devolvemos la lista completa
+            return ResponseEntity.ok(carritos);
+        }
     }
+
 
     @PostMapping("/eliminar/{idProducto}/{idCliente}")
     public ResponseEntity<CarritoProductoResponse> eliminar(@PathVariable Long idProducto, @PathVariable Long idCliente) {

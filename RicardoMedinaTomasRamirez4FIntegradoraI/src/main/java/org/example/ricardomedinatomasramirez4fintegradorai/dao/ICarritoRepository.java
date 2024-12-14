@@ -12,6 +12,8 @@ public interface ICarritoRepository extends CrudRepository<CarritoProducto, Long
     //ResponseEntity<CarritoProductoResponse> eliminar();
     //List<CarritoProducto> findByIdProductoAndIdCliente(Long productoId, Long clienteId);
     List<CarritoProducto> findByProductoIdAndClienteId(Long productoId, Long clienteId);
+    List<CarritoProducto> findByClienteId(Long clienteId);
     CarritoProducto findTopByOrderByIdAsc();
+
 
 }
