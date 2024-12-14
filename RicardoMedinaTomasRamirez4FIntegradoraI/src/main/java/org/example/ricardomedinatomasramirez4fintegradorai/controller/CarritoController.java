@@ -69,8 +69,22 @@ public class CarritoController {
     public ResponseEntity<CarritoProducto> deshacer() {
 
         CarritoProducto itemReAdd = new CarritoProducto();
-        //itemReAdd.set
-        CarritoProducto carritoProducto = carritoRepository.save(elementosEliminados.pop());
+        Cliente cliente = new Cliente();
+        Producto producto = new Producto();
+
+       itemReAdd = elementosEliminados.peek();
+        itemReAdd.setId(Long.valueOf(0));
+        //itemReAdd.setCliente(elementosEliminados.peek().getCliente());
+        //itemReAdd.setProducto(elementosEliminados.peek().getProducto());
+        //itemReAdd.setCantidad(elementosEliminados.peek().getCantidad());
+
+
+        System.out.println("cliente: " + itemReAdd.getCliente().getPrimerNombre());
+        System.out.println("producto: " + itemReAdd.getProducto().getNombre());
+        System.out.println("cantidad: " + itemReAdd.getCantidad());
+
+        CarritoProducto carritoProducto = carritoRepository.save(itemReAdd);
+        elementosEliminados.pop();
         return ResponseEntity.ok(carritoProducto);
     }
 }
