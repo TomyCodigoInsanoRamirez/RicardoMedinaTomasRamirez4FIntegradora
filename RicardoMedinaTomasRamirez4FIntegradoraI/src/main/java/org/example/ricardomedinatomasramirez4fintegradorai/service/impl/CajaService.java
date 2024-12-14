@@ -1,4 +1,4 @@
-package org.example.ricardomedinatomasramirez4fintegradorai.service;
+package org.example.ricardomedinatomasramirez4fintegradorai.service.impl;
 
 import org.example.ricardomedinatomasramirez4fintegradorai.model.Caja;
 import org.example.ricardomedinatomasramirez4fintegradorai.dao.ICajaRepository;
@@ -6,29 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Queue;
 import java.util.LinkedList;
-
 @Service
 public class CajaService {
 
-    @Autowired
-    private ICajaRepository cajaRepository;
+    private Queue<Caja> filaClientes = new LinkedList<>();
 
-    // Cola para manejar los clientes
-    private Queue<Caja> cola = new LinkedList<>();
-
-    // Método para agregar un cliente a la cola
-    public void agregarCliente(Caja caja) {
-        cola.add(caja);
-        cajaRepository.save(caja); // Guarda la entidad en la base de datos si es necesario
+    // Método para agregar un cliente a la fila
+    public void agregarCliente(Caja cliente) {
+        filaClientes.offer(cliente); // Añadir al final de la cola
     }
 
-    // Método para atender al siguiente cliente de la cola
+    // Método para atender al siguiente cliente
     public Caja atenderCliente() {
-        return cola.poll(); // Devuelve y elimina el primer cliente de la cola
+        return filaClientes.poll(); // Elimina y retorna el cliente del frente de la cola
     }
 
-    // Método para obtener la fila actual de clientes
+    // Método para obtener la cola completa
     public Queue<Caja> obtenerFila() {
-        return cola;
+        return filaClientes;
     }
 }
