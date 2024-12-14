@@ -13,6 +13,7 @@ public interface ICarritoRepository extends CrudRepository<CarritoProducto, Long
     //List<CarritoProducto> findByIdProductoAndIdCliente(Long productoId, Long clienteId);
     List<CarritoProducto> findByProductoIdAndClienteId(Long productoId, Long clienteId);
     List<CarritoProducto> findByClienteId(Long clienteId);
+    //CarritoProducto findByClienteId(Long clienteId);
     CarritoProducto findTopByOrderByIdAsc();
 
 

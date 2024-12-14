@@ -1,5 +1,6 @@
 package org.example.ricardomedinatomasramirez4fintegradorai.controller;
 
+import org.example.ricardomedinatomasramirez4fintegradorai.StackAndQueue.Queue;
 import org.example.ricardomedinatomasramirez4fintegradorai.StackAndQueue.Stack;
 import org.example.ricardomedinatomasramirez4fintegradorai.dao.ICarritoProductoRepositoryCustom;
 import org.example.ricardomedinatomasramirez4fintegradorai.dao.ICarritoRepository;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 //import java.util.Stack;
@@ -22,13 +24,15 @@ import java.util.Optional;
 public class CarritoController {
     //Stack<CarritoProducto> elementosEliminados = new Stack<>();
     Stack<CarritoProducto> elementosEliminados = new Stack<CarritoProducto>(100);
+    private ICarritoRepository carritoRepositoryy;
     @Autowired
     private ICarritoRepository carritoRepository;
     private ICarritoProductoRepositoryCustom carritoRepositoryCustom;
     private final ICarritoService carritoService;
-
+    Queue<Producto> queueProdcutos = new Queue<Producto>(100);
     @Autowired
-    public CarritoController(ICarritoService carritoService) {
+    public CarritoController(ICarritoRepository carritoRepositoryy, ICarritoService carritoService) {
+        this.carritoRepositoryy = carritoRepositoryy;
         this.carritoService = carritoService;
     }
 
@@ -55,16 +59,26 @@ public class CarritoController {
 
     @Transactional
     @GetMapping("/carrito/{id}")
-    public ResponseEntity<List<CarritoProducto>> getItemCliente(@PathVariable Long id) {
-        // Buscar los productos asociados al cliente
-        List<CarritoProducto> carritos = carritoRepository.findByClienteId(id);
+    public List getItemCliente(@PathVariable Long id) {
+        // Obtener el siguiente cliente que no ha sido agregado a la fila
+        //Cliente siguienteCliente = clienteRepository.findTopByOrderByIdAsc(); // Obtener el cliente con el id más bajo que aún no está en la cola
+        List<CarritoProducto> siguienteCliente = carritoRepositoryy.findByClienteId(id); // Obtener el cliente con el id más bajo que aún no está en la cola
+        CarritoProducto cp =  new CarritoProducto();
 
-        if (carritos.isEmpty()) {
-            // Si la lista está vacía, devolvemos un 404 Not Found
-            return ResponseEntity.notFound().build();
+        List<Producto> p = new ArrayList<>();
+
+        for(int i = 0; i < siguienteCliente.size();i++){
+            p.add(siguienteCliente.get(i).getProducto());
+        }
+
+        if (siguienteCliente != null) {
+            for(int i = 0; i < siguienteCliente.size();i++){
+                queueProdcutos.offer(p.get(i));
+            }
+
+            return p;
         } else {
-            // Si hay resultados, devolvemos la lista completa
-            return ResponseEntity.ok(carritos);
+            return null;
         }
     }
 

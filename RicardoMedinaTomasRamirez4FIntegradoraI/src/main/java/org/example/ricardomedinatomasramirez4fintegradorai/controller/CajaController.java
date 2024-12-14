@@ -5,6 +5,8 @@ import org.example.ricardomedinatomasramirez4fintegradorai.dao.ICarritoRepositor
 import org.example.ricardomedinatomasramirez4fintegradorai.dao.IClienteRepository;
 import org.example.ricardomedinatomasramirez4fintegradorai.model.Caja;
 import org.example.ricardomedinatomasramirez4fintegradorai.model.CarritoProducto;
+import org.example.ricardomedinatomasramirez4fintegradorai.model.Cliente;
+import org.example.ricardomedinatomasramirez4fintegradorai.model.Producto;
 import org.example.ricardomedinatomasramirez4fintegradorai.response.CarritoProducto.CarritoProductoResponse;
 import org.example.ricardomedinatomasramirez4fintegradorai.service.impl.CajaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 //import java.util.Queue;
 
 @RestController
@@ -26,8 +29,9 @@ public class CajaController {
     private IClienteRepository clienteRepository; // Repositorio para acceder a clientes
     private ICarritoRepository carritoRepositoryy;
 
-    Queue<CarritoProducto> queue = new Queue<CarritoProducto>(100);
-    //Queue<CarritoProducto> queue2 = new Queue<CarritoProducto>(100);
+    Queue<Cliente> queue = new Queue<Cliente>(100);
+    Queue<Producto> queueProdcutos = new Queue<Producto>(100);
+    //Queue<Cliente> queue2 = new Queue<Cliente>(100);
     //Queue<CarritoProducto> queue2 = new LinkedList<>(queue); // Copia de la cola original
 
 
@@ -35,23 +39,28 @@ public class CajaController {
         this.carritoRepositoryy = carritoRepositoryy;
     }
 
-    @PostMapping("/agregarUltimoCliente")
-    public CarritoProducto agregarUltimoCliente() {
+    @PostMapping("/agregar/{id}")
+    public Cliente agregarUltimoCliente(@PathVariable Long id) {
         // Obtener el siguiente cliente que no ha sido agregado a la fila
         //Cliente siguienteCliente = clienteRepository.findTopByOrderByIdAsc(); // Obtener el cliente con el id más bajo que aún no está en la cola
-        CarritoProducto siguienteCliente = carritoRepositoryy.findTopByOrderByIdAsc(); // Obtener el cliente con el id más bajo que aún no está en la cola
-
+        List<CarritoProducto> siguienteCliente = carritoRepositoryy.findByClienteId(id); // Obtener el cliente con el id más bajo que aún no está en la cola
+        Cliente cliente = new Cliente();
+        CarritoProducto clientee = new CarritoProducto();
+        //cliente.setId(siguienteCliente.get(0).getId());
+        //cliente.setCliente(siguienteCliente.get(0).getCliente());
+        //cliente.setProducto(siguienteCliente.get(0).getProducto());
+        //cliente.setCantidad(siguienteCliente.get(0).getCantidad());
+        cliente.setId(siguienteCliente.get(0).getCliente().getId());
+        //clientee.setPrimerNombre(siguienteCliente.get(0).getCliente().getPrimerNombre());
+        cliente.setApellidoPaterno(siguienteCliente.get(0).getCliente().getApellidoPaterno());
+        cliente.setId(siguienteCliente.get(0).getId());
+        //clientee.setCliente(siguienteCliente.get(0).getCliente());
+        //clientee.setProducto(siguienteCliente.get(0).getProducto());
+        queue.offer(siguienteCliente.get(0).getCliente());
         if (siguienteCliente != null) {
-            // Crear el objeto Caja con la información del cliente
-            //Caja caja = new Caja(siguienteCliente.getId(), siguienteCliente.getPrimerNombre());
-            //cajaService.agregarCliente(caja); // Agregar el cliente a la cola
 
-            // Eliminar el cliente de la base de datos
 
-            queue.offer(siguienteCliente);
-            carritoRepositoryy.delete(siguienteCliente); // Eliminar el cliente de la base de datos
-
-            return siguienteCliente;
+            return siguienteCliente.get(0).getCliente();
         } else {
             return null;
         }
@@ -60,9 +69,9 @@ public class CajaController {
 
     // Endpoint para atender al siguiente cliente
     @GetMapping("/atender")
-    public ResponseEntity<CarritoProducto> atenderCliente() {
+    public ResponseEntity<Cliente> atenderCliente() {
         //Caja siguienteCliente = cajaService.atenderCliente(); // Obtener cliente
-        CarritoProducto siguienteCliente = queue.peek();
+        Cliente siguienteCliente = queue.peek();
         if (siguienteCliente != null) {
             queue.poll();
             return ResponseEntity.ok(siguienteCliente);
@@ -84,11 +93,11 @@ public class CajaController {
      //cambiossssss
 
     @GetMapping("/obtenerFila")
-    public ResponseEntity<ArrayList<CarritoProducto>> obtenerFila() {
+    public ResponseEntity<ArrayList<Cliente>> obtenerFila() {
 
-        Queue<CarritoProducto> queue2 = queue.copy();
+        Queue<Cliente> queue2 = queue.copy();
         //queue2 = queue;
-        ArrayList<CarritoProducto> res= new ArrayList<CarritoProducto>();// Obtener la cola completa
+        ArrayList<Cliente> res= new ArrayList<Cliente>();// Obtener la cola completa
         while (!queue2.isEmpty()){
             res.add(queue2.poll());
         }
