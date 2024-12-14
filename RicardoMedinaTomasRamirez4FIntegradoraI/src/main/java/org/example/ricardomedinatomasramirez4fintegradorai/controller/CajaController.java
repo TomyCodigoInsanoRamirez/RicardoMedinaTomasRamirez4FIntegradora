@@ -23,17 +23,20 @@ public class CajaController {
 
     @PostMapping("/agregarUltimoCliente")
     public ResponseEntity<String> agregarUltimoCliente() {
-        // Obtener todos los clientes
-        List<Cliente> clientes = clienteRepository.findAll(); // Obtener todos los clientes
-        if (!clientes.isEmpty()) {
-            // Iterar sobre los clientes y agregar cada uno a la fila
-            for (Cliente cliente : clientes) {
-                Caja caja = new Caja(cliente.getId(), cliente.getPrimerNombre()); // Crear caja para la cola
-                cajaService.agregarCliente(caja); // Agregar a la cola
-            }
-            return ResponseEntity.ok("Clientes agregados a la fila: " );
+        // Obtener el siguiente cliente que no ha sido agregado a la fila
+        Cliente siguienteCliente = clienteRepository.findTopByOrderByIdAsc(); // Obtener el cliente con el id más bajo que aún no está en la cola
+
+        if (siguienteCliente != null) {
+            // Crear el objeto Caja con la información del cliente
+            Caja caja = new Caja(siguienteCliente.getId(), siguienteCliente.getPrimerNombre());
+            cajaService.agregarCliente(caja); // Agregar el cliente a la cola
+
+            // Eliminar el cliente de la base de datos
+            clienteRepository.delete(siguienteCliente); // Eliminar el cliente de la base de datos
+
+            return ResponseEntity.ok("Cliente agregado a la fila: " + siguienteCliente.getPrimerNombre());
         } else {
-            return ResponseEntity.status(404).body("No hay clientes registrados");
+            return ResponseEntity.status(404).body("No hay más clientes registrados");
         }
     }
 
