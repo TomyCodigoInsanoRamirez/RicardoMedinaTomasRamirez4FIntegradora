@@ -1,5 +1,6 @@
 package org.example.ricardomedinatomasramirez4fintegradorai.controller;
 
+import org.example.ricardomedinatomasramirez4fintegradorai.StackAndQueue.Stack;
 import org.example.ricardomedinatomasramirez4fintegradorai.dao.ICarritoProductoRepositoryCustom;
 import org.example.ricardomedinatomasramirez4fintegradorai.dao.ICarritoRepository;
 import org.example.ricardomedinatomasramirez4fintegradorai.model.CarritoProducto;
@@ -13,12 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.Stack;
+//import java.util.Stack;
 
 @RestController
 @RequestMapping("/carrito")
 public class CarritoController {
-    Stack<CarritoProducto> elementosEliminados = new Stack<>();
+    //Stack<CarritoProducto> elementosEliminados = new Stack<>();
+    Stack<CarritoProducto> elementosEliminados = new Stack<CarritoProducto>(100);
     @Autowired
     private ICarritoRepository carritoRepository;
     private ICarritoProductoRepositoryCustom carritoRepositoryCustom;
@@ -50,24 +52,24 @@ public class CarritoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/eliminar/{id}")
-    public ResponseEntity<CarritoProductoResponse> eliminar(@PathVariable Long idProducto, Long idCliente) {
+    @PostMapping("/eliminar/{idProducto}/{idCliente}")
+    public ResponseEntity<CarritoProductoResponse> eliminar(@PathVariable Long idProducto, @PathVariable Long idCliente) {
 
         CarritoProducto elementoEliminado = new CarritoProducto();
-        //elementoEliminado.setId(carritoRepository.findByIdProductoAndIdCliente(idProducto,idCliente).get(0).getId());
-        elementoEliminado.setCantidad(carritoRepository.findByIdProductoAndIdCliente(idProducto,idCliente).get(0).getCantidad());
-        elementoEliminado.setCliente(carritoRepository.findByIdProductoAndIdCliente(idProducto,idCliente).get(0).getCliente());
-        elementoEliminado.setProducto(carritoRepository.findByIdProductoAndIdCliente(idProducto,idCliente).get(0).getProducto());
+        elementoEliminado.setId(carritoRepository.findByProductoIdAndClienteId(idProducto,idCliente).get(0).getId());
+        elementoEliminado.setCantidad(carritoRepository.findByProductoIdAndClienteId(idProducto,idCliente).get(0).getCantidad());
+        elementoEliminado.setCliente(carritoRepository.findByProductoIdAndClienteId(idProducto,idCliente).get(0).getCliente());
+        elementoEliminado.setProducto(carritoRepository.findByProductoIdAndClienteId(idProducto,idCliente).get(0).getProducto());
         elementosEliminados.push(elementoEliminado);
 
-        return carritoService.eliminar(carritoRepository.findByIdProductoAndIdCliente(idProducto,idCliente).get(0).getId());
+        return carritoService.eliminar(carritoRepository.findByProductoIdAndClienteId(idProducto,idCliente).get(0).getId());
     }
 
     @PostMapping("/deshacer")
     public ResponseEntity<CarritoProducto> deshacer() {
 
         CarritoProducto itemReAdd = new CarritoProducto();
-
+        //itemReAdd.set
         CarritoProducto carritoProducto = carritoRepository.save(elementosEliminados.pop());
         return ResponseEntity.ok(carritoProducto);
     }

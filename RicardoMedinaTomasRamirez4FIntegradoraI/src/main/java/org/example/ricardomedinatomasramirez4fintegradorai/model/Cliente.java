@@ -25,6 +25,10 @@ public class Cliente {
         this.id = id;
     }
 
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
+
     public String getPrimerNombre() {
         return primerNombre;
     }

@@ -9,5 +9,7 @@ import java.util.List;
 
 public interface ICarritoRepository extends CrudRepository<CarritoProducto, Long> {
     //ResponseEntity<CarritoProductoResponse> eliminar();
-    List<CarritoProducto> findByIdProductoAndIdCliente(Long idProducto, Long idCliente);
+    //List<CarritoProducto> findByIdProductoAndIdCliente(Long productoId, Long clienteId);
+    List<CarritoProducto> findByProductoIdAndClienteId(Long productoId, Long clienteId);
+
 }
